@@ -1,5 +1,7 @@
 import { NextRequest } from "next/server";
 import Anthropic from "@anthropic-ai/sdk";
+
+export const maxDuration = 300;
 import {
   agentTools,
   executeWebSearch,
@@ -170,7 +172,7 @@ export async function POST(request: NextRequest) {
         ];
 
         let iterationCount = 0;
-        const maxIterations = 15;
+        const maxIterations = 10;
 
         while (iterationCount < maxIterations) {
           iterationCount++;
