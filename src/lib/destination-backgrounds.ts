@@ -71,21 +71,15 @@ export function getRegionForDestination(destination: string): string | null {
 
 /** Get background photo URL and gradient for a destination */
 export function getDestinationBackground(destination: string): {
-  photoUrl: string;
+  photoUrl: string | null;
   gradient: string;
 } {
   const city = extractCityName(destination).toLowerCase();
 
-  // 1. Curated photo lookup
-  const curated = CURATED_PHOTOS[city];
+  // 1. Curated photo lookup (null if not found — fetched dynamically via API)
+  const photoUrl = CURATED_PHOTOS[city] || null;
 
-  // 2. Dynamic Unsplash fallback
-  const encodedCity = encodeURIComponent(city);
-  const dynamicUrl = `https://source.unsplash.com/1920x1080/?${encodedCity}+city+landmark`;
-
-  const photoUrl = curated || dynamicUrl;
-
-  // 3. Region gradient (always applied)
+  // 2. Region gradient (always applied)
   const region = getRegionForDestination(destination);
   const gradient = (region && REGION_GRADIENTS[region]) || DEFAULT_GRADIENT;
 
